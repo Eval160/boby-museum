@@ -1,5 +1,6 @@
 import logo from './logo_boby_museum.png';
 import './App.css';
+import Artwork from './components/Artwork';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
         <h1>Boby Museum</h1>
         <img src={logo} className="App-logo" alt="logo" width="200" height="200" />
       </header>
+      <Artwork />
     </div>
   );
 }
