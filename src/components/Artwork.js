@@ -27,7 +27,6 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
 
   }
 
-
   const checkUserAnswer = () => {
     const userAnswerInInt = Number(userAnswer)
     const isCorrect = userAnswerInInt === artworkData.objectEndDate
@@ -62,7 +61,10 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
         <>
           <div className="artWorkWrapper">
             <h2>{artworkData.title}</h2>
-            <img src={artworkData.primaryImageSmall} alt={artworkData.title} width="400" height="400" />
+            <img src={artworkData.primaryImageSmall}
+                 alt={artworkData.title}
+                 width="400"
+                  />
           </div>
           { answerSubmitted ? (
             <>
@@ -71,8 +73,10 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             </>
           ) : (
             <div className="artwork-form">
-              <input type="text" onKeyUp={handleKeyUp}/>
-              <button type="button" onClick={handleAnswerSubmitted}>Go</button>
+              <input type="number" onKeyUp={handleKeyUp} placeholder="Tapez une date ..."/>
+              <button type="button"
+                      className="btn"
+                      onClick={handleAnswerSubmitted}>Go</button>
             </div>
           ) }
         </>
