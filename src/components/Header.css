@@ -1,0 +1,11 @@
+.App-header {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  font-size: calc(16px + 1vmin);
+  margin: 2rem 0;
+}
+
+.App-header h1 {
+  margin-right: 1rem;
+}
