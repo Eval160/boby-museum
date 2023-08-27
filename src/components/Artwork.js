@@ -7,7 +7,6 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
   const [artworkData, setArtworkData] = useState(null);
   const [userAnswer, setUserAnswer] = useState("");
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
-  const [showForm, setShowForm] = useState(true);
   const [userAnswerIsCorrect, setUserAnswerIsCorrect] = useState(null);
   const [differenceFromCorrectDate, setDifferenceFromCorrectDate] = useState(0); // Renommé pour indiquer la différence
 
@@ -28,16 +27,14 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
 
   }
 
-  // const handleNextArtwork = () => {
-  //   // Choisir un nouvel ID au hasard et mettre à jour l'état
-  //   const randomId = artworkIds[Math.floor(Math.random() * artworkIds.length)];
-  //   setSelectedArtworkId(randomId);
-  // };
-
   const handleAnswerSubmitted = () => {
-    setShowForm(false)
     checkUserAnswer();
     setAnswerSubmitted(true)
+  }
+
+  const handleNextArtwork = () => {
+    setAnswerSubmitted(false);
+    onAnswerSubmitted();
   }
 
   const checkUserAnswer = () => {
@@ -62,7 +59,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             <h2>{artworkData.title}</h2>
             <img src={artworkData.primaryImageSmall} alt={artworkData.title} width="400" height="400" />
           </div>
-          { showForm &&
+          { !answerSubmitted &&
             <div className="artwork-form">
               <input type="text" onChange={handleChange} />
               <button type="button" onClick={handleAnswerSubmitted}>Go</button>
@@ -73,7 +70,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             answerSubmitted && (
               <>
                 <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
-                <button onClick={onAnswerSubmitted}>Changer d'œuvre</button>
+                <button onClick={handleNextArtwork}>Changer d'œuvre</button>
               </>
             )
 

@@ -24,14 +24,13 @@ function ArtworkContainer() {
   }
 
   const handleNextArtwork = () => {
-    console.log("hello");
     setRandomArtworkId(getRandomArtworkId(artworkIds));
-
   };
 
   return (
     <>{ randomArtworkId &&
-      <Artwork artworkId={randomArtworkId} onAnswerSubmitted={handleNextArtwork} />
+      <Artwork artworkId={randomArtworkId}
+               onAnswerSubmitted={handleNextArtwork}/>
     }</>
   )
 }
