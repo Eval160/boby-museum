@@ -47,9 +47,13 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
     }
   }
 
-  const handleChange = (e) => {
-    setUserAnswer(e.target.value)
-  }
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter") {
+      handleAnswerSubmitted();
+    } else {
+      setUserAnswer(e.target.value)
+    }
+  };
 
   return (
     <>
@@ -61,7 +65,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
           </div>
           { !answerSubmitted &&
             <div className="artwork-form">
-              <input type="text" onChange={handleChange} />
+              <input type="text" onKeyUp={handleKeyUp}/>
               <button type="button" onClick={handleAnswerSubmitted}>Go</button>
             </div>
           }
