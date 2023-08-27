@@ -78,7 +78,9 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             </>
           ) : (
             <div className="artwork-form">
-              <input type="number" onKeyUp={handleKeyUp} placeholder="Tapez une date ..."/>
+              <input type="number"
+                     onKeyUp={handleKeyUp}
+                     placeholder="Année de création ..."/>
               <button type="button"
                       className="btn"
                       onClick={handleAnswerSubmitted}>Go</button>
@@ -86,7 +88,6 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
           ) }
         </>
       )}
-
     </>
   );
 }
