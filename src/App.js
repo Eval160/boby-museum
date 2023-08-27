@@ -14,7 +14,6 @@ function App() {
     fetch(baseURL)
       .then(response => response.json())
       .then(data => {
-        console.trace()
         setArtworkIds(data.objectIDs); // Mettre à jour l'état avec la liste d'IDs
       })
       .catch(error => {
@@ -28,7 +27,9 @@ function App() {
         <h1>Boby Museum</h1>
         <img src={logo} className="App-logo" alt="logo" width="200" height="200" />
       </header>
-      <Artwork artworkIds={artworkIds}/>
+      { artworkIds &&
+        <Artwork artworkIds={artworkIds}/>
+      }
     </div>
   );
 }
