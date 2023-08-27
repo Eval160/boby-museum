@@ -1,0 +1,10 @@
+.loading-wrapper {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-message span {
+  margin-left: 0.75rem;
+}
