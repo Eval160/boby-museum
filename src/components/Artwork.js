@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './Artwork.css';
 import AnswerFeedback from './AnswerFeedback';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 function Artwork({ artworkId, onAnswerSubmitted }) {
   const baseUrl = "https://collectionapi.metmuseum.org/public/collection/v1/objects/"
@@ -69,7 +71,10 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
           { answerSubmitted ? (
             <>
               <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
-              <button onClick={handleNextArtwork}>Changer d'œuvre</button>
+              <button onClick={handleNextArtwork}
+                      className="btn">
+                <FontAwesomeIcon icon={faChevronLeft} />  Rejouer avec une nouvelle image
+              </button>
             </>
           ) : (
             <div className="artwork-form">

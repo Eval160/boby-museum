@@ -1,6 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
+import "./AnswerFeedback.css";
 
 export default function AnswerFeedback({isCorrect, difference}) {
   return (
