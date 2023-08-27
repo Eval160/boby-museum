@@ -27,15 +27,6 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
 
   }
 
-  const handleAnswerSubmitted = () => {
-    checkUserAnswer();
-    setAnswerSubmitted(true)
-  }
-
-  const handleNextArtwork = () => {
-    setAnswerSubmitted(false);
-    onAnswerSubmitted();
-  }
 
   const checkUserAnswer = () => {
     const userAnswerInInt = Number(userAnswer)
@@ -55,6 +46,16 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
     }
   };
 
+  const handleAnswerSubmitted = () => {
+    checkUserAnswer();
+    setAnswerSubmitted(true)
+  }
+
+  const handleNextArtwork = () => {
+    setAnswerSubmitted(false);
+    onAnswerSubmitted();
+  }
+
   return (
     <>
        {artworkData && (
@@ -63,22 +64,17 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             <h2>{artworkData.title}</h2>
             <img src={artworkData.primaryImageSmall} alt={artworkData.title} width="400" height="400" />
           </div>
-          { !answerSubmitted &&
+          { answerSubmitted ? (
+            <>
+              <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
+              <button onClick={handleNextArtwork}>Changer d'œuvre</button>
+            </>
+          ) : (
             <div className="artwork-form">
               <input type="text" onKeyUp={handleKeyUp}/>
               <button type="button" onClick={handleAnswerSubmitted}>Go</button>
             </div>
-          }
-
-          {
-            answerSubmitted && (
-              <>
-                <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
-                <button onClick={handleNextArtwork}>Changer d'œuvre</button>
-              </>
-            )
-
-          }
+          ) }
         </>
       )}
 
