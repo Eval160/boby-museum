@@ -2,37 +2,31 @@ import { useState, useEffect } from 'react';
 import './Artwork.css';
 import AnswerFeedback from './AnswerFeedback';
 
-function Artwork({ artworkIds }) {
+function Artwork({ artworkId, onAnswerSubmitted }) {
   const baseUrl = "https://collectionapi.metmuseum.org/public/collection/v1/objects/"
   const [artworkData, setArtworkData] = useState(null);
-  const [selectedArtworkId, setSelectedArtworkId] = useState(null);
-  const [userAnswer, setUserAnswer] = useState(null);
-  const [showAnswerFeedback, setShowAnswerFeedback] = useState(false);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [userAnswerIsCorrect, setUserAnswerIsCorrect] = useState(null);
   const [differenceFromCorrectDate, setDifferenceFromCorrectDate] = useState(0); // Renommé pour indiquer la différence
 
-
   useEffect(() => {
-    // Choisis un ID au hasard lors du chargement initial du composant
-    const randomId = artworkIds[Math.floor(Math.random() * artworkIds.length)];
-    setSelectedArtworkId(randomId);
-  }, [artworkIds]);
+    fetchArtworkData();
+  }, [artworkId]);
 
-  useEffect(() => {
-    if (selectedArtworkId !== null) {
-      // Effectuer la deuxième requête pour récupérer les informations de l'œuvre
-      fetch(`${baseUrl}${selectedArtworkId}`)
+  const fetchArtworkData = () => {
+    fetch(`${baseUrl}${artworkId}`)
         .then(response => response.json())
         .then(data => {
           console.log(data.objectEndDate);
-          setArtworkData(data); // Mettre à jour l'état avec les données de l'API
+          setArtworkData(data);
         })
         .catch(error => {
           console.error('Erreur lors de la requête API pour les détails de l\'œuvre :', error);
         });
-    }
-  }, [selectedArtworkId]);
+
+  }
 
   // const handleNextArtwork = () => {
   //   // Choisir un nouvel ID au hasard et mettre à jour l'état
@@ -40,28 +34,20 @@ function Artwork({ artworkIds }) {
   //   setSelectedArtworkId(randomId);
   // };
 
-  const checkUserAnswer = () => {
-    console.log("Hey!");
-    console.log(typeof userAnswer);
-    const userAnswerInInt = Number(userAnswer)
-
+  const handleAnswerSubmitted = () => {
     setShowForm(false)
-    if (userAnswerInInt === artworkData.objectEndDate) {
-      handleCorrectAnswer()
-    } else {
-      handleIncorrectAnswer(userAnswerInInt)
+    checkUserAnswer();
+    setAnswerSubmitted(true)
+  }
+
+  const checkUserAnswer = () => {
+    const userAnswerInInt = Number(userAnswer)
+    const isCorrect = userAnswerInInt === artworkData.objectEndDate
+    setUserAnswerIsCorrect(isCorrect);
+    if (!isCorrect) {
+      const difference = userAnswerInInt - artworkData.objectEndDate
+      setDifferenceFromCorrectDate(difference)
     }
-    setShowAnswerFeedback(true)
-  }
-
-  const handleCorrectAnswer = () => {
-    setUserAnswerIsCorrect(true)
-  }
-
-  const handleIncorrectAnswer = (userAnswerInInt) => {
-    setUserAnswerIsCorrect(false)
-    const difference = userAnswerInInt - artworkData.objectEndDate
-    setDifferenceFromCorrectDate(difference)
   }
 
   const handleChange = (e) => {
@@ -69,9 +55,9 @@ function Artwork({ artworkIds }) {
   }
 
   return (
-    <div>
+    <>
        {artworkData && (
-        <div>
+        <>
           <div className="artWorkWrapper">
             <h2>{artworkData.title}</h2>
             <img src={artworkData.primaryImageSmall} alt={artworkData.title} width="400" height="400" />
@@ -79,20 +65,23 @@ function Artwork({ artworkIds }) {
           { showForm &&
             <div className="artwork-form">
               <input type="text" onChange={handleChange} />
-              <button type="button" onClick={checkUserAnswer}>Go</button>
+              <button type="button" onClick={handleAnswerSubmitted}>Go</button>
             </div>
           }
 
           {
-            showAnswerFeedback &&
-            <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
-          }
+            answerSubmitted && (
+              <>
+                <AnswerFeedback isCorrect={userAnswerIsCorrect} difference={differenceFromCorrectDate}/>
+                <button onClick={onAnswerSubmitted}>Changer d'œuvre</button>
+              </>
+            )
 
-        </div>
+          }
+        </>
       )}
 
-      {/* <button onClick={handleNextArtwork}>Changer d'œuvre</button> */}
-    </div>
+    </>
   );
 }
 
