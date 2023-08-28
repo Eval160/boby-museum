@@ -20,12 +20,11 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
     fetch(`${baseUrl}${artworkId}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data.objectEndDate);
           setArtworkData(data);
         })
         .catch(error => {
           console.error('Erreur lors de la requête API pour les détails de l\'œuvre :', error);
-        });
+        })
 
   }
 
