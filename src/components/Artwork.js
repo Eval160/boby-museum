@@ -64,7 +64,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             <h2>{artworkData.title}</h2>
             <img src={artworkData.primaryImageSmall}
                  alt={artworkData.title}
-                 width="400"
+                 height="300"
                   />
           </div>
           { answerSubmitted ? (
