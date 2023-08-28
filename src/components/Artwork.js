@@ -11,6 +11,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [userAnswerIsCorrect, setUserAnswerIsCorrect] = useState(null);
   const [differenceFromCorrectDate, setDifferenceFromCorrectDate] = useState(0); // Renommé pour indiquer la différence
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchArtworkData();
@@ -18,12 +19,18 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
 
   const fetchArtworkData = () => {
     fetch(`${baseUrl}${artworkId}`)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Erreur lors de la requête API pour les détails de l'oeuvre");
+          }
+          return response.json();
+        })
         .then(data => {
+          console.log(data.objectEndDate);
           setArtworkData(data);
         })
         .catch(error => {
-          console.error('Erreur lors de la requête API pour les détails de l\'œuvre :', error);
+          setError(error.message);
         })
 
   }
@@ -58,7 +65,10 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
 
   return (
     <>
-       {artworkData && (
+       { error ? (
+        <div className="error-message">{error}</div>
+       ) : (
+        artworkData && (
         <>
           <div className="artWorkWrapper">
             <h2>{artworkData.title}</h2>
@@ -86,7 +96,7 @@ function Artwork({ artworkId, onAnswerSubmitted }) {
             </div>
           ) }
         </>
-      )}
+      ))}
     </>
   );
 }

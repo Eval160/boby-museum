@@ -8,16 +8,22 @@ function ArtworkContainer() {
   const [artworkIds, setArtworkIds] = useState([]);
   const [randomArtworkId, setRandomArtworkId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(baseURL)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de la requête API pour récupérer les IDs");
+        }
+        return response.json()
+      })
       .then(data => {
         setArtworkIds(data.objectIDs);
         setRandomArtworkId(getRandomArtworkId(data.objectIDs));
       })
       .catch(error => {
-        console.error('Erreur lors de la requête API pour les IDs :', error);
+        setError(error.message);
       })
       .finally(() => setIsLoading(false));;
   }, [baseURL]);
@@ -33,7 +39,10 @@ function ArtworkContainer() {
   return (
 
     <div>
-      {isLoading ? (
+      { error ? (
+        <div className="error-message">{error}</div>
+      ) : (
+        isLoading ? (
           <Loader/>
       ) : (
         randomArtworkId && (
@@ -42,7 +51,7 @@ function ArtworkContainer() {
             onAnswerSubmitted={handleNextArtwork}
           />
         )
-      )}
+      ))}
     </div>
   )
 }
